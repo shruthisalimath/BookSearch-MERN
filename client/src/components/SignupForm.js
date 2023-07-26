@@ -5,7 +5,7 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import Auth from '../utils/auth';
 
 //add apollo graphql
-import { useMutation } from "@appolo/client";
+import { useMutation } from "@apollo/client";
 import { ADD_USER } from '../utils/mutation';
 
 const SignupForm = () => {

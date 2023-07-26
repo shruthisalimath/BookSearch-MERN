@@ -1,5 +1,5 @@
 //setup for react and Apollo client
-import { gql } from "@appolo/client";
+import { gql } from "@apollo/client";
 
 // setup for User data and any saved book data
 // loads in 'SavedBooks.js'
