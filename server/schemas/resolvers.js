@@ -21,7 +21,7 @@ const resolvers = {
         }
     },
 
-    Mutatuion: {
+    Mutation: {
         //addUser mutation that returns an Auth object
         addUser: async (parent, args) => {
             const user = await User.create(args);
