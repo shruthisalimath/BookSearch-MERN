@@ -31,9 +31,9 @@ const resolvers = {
 
         // login mutation that returns an Auth object
         login: async (parent, { email, password }) => {
-            const user = await User.findOne({
-                $or: [{ username: email }, { email: email }],
-            });
+            const user = await User.findOne({ email });
+            //     $or: [{ username: email }, { email: email }],
+            // });
             if (!user) {
                 throw new AuthenticationError("Incorrect Credentials");
             }
