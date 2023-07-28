@@ -68,7 +68,7 @@ const SearchBooks = () => {
   };
 
   // create function to handle saving a book to our database
-  const handleSaveBook = async (bookId) => {
+  const handleSaveBook = async bookId => {
     // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
 
@@ -81,10 +81,14 @@ const SearchBooks = () => {
 
     try {
       // save book to database
-      const { data } = await saveBook({
-        variables: { ...bookToSave },
+      const response = await saveBook({
+        variables: bookToSave   
       });
-      console.log(data);
+      //console.log(data);
+
+      if(!response) {
+        throw new Error("book unable to save");
+      }
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
@@ -156,7 +160,7 @@ const SearchBooks = () => {
                       onClick={() => handleSaveBook(book.bookId)}
                     >
                       {savedBookIds?.some(
-                        (savedBookId) => savedBookId === book.bookId
+                        savedBookId => savedBookId === book.bookId
                       )
                         ? "This book has already been saved!"
                         : "Save this Book!"}

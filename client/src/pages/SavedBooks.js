@@ -19,13 +19,13 @@ import { REMOVE_BOOK } from "../utils/mutation";
 const SavedBooks = () => {
   // define Get Me api call
   const { loading, data } = useQuery(GET_ME);
-  const userData = data?.me || [];
+  let userData = data?.me || [];
 
   // define remove book mutation
   const [removeBook] = useMutation(REMOVE_BOOK);
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId) => {
+  const handleDeleteBook = async bookId => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
@@ -34,11 +34,12 @@ const SavedBooks = () => {
 
     try {
       // call remove book
-      const { data } = await removeBook({
-        variables: { bookId },
+      const { user } = await removeBook({
+        variables: { bookId: bookId },
       });
-      console.log(data);
+      console.log(user);
       // upon success, remove book's id from localStorage
+      userData = user;
       removeBookId(bookId);
     } catch (err) {
       console.error(err);
@@ -59,14 +60,14 @@ const SavedBooks = () => {
         ) : (
           <>
             <h2 className="pt-5">
-              {userData.savedBooks.length
+              {userData.savedBooks?.length
                 ? `Viewing ${userData.savedBooks.length} saved ${
                     userData.savedBooks.length === 1 ? "book" : "books"
                   }:`
                 : "You have no saved books!"}
             </h2>
             <Row>
-              {userData.savedBooks.map((book) => {
+              {userData.savedBooks?.map((book) => {
                 return (
                   <Col md="4">
                   <Card key={book.bookId} border="dark">

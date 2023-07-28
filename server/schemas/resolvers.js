@@ -15,10 +15,10 @@ const resolvers = {
             throw new AuthenticationError("You need to be logged in!");
         },
 
-        //query that returns all users
-        users: async () => {
-            return await User.find({});
-        }
+        // //query that returns all users
+        // users: async () => {
+        //     return await User.find({});
+        // }
     },
 
     Mutation: {
@@ -49,11 +49,11 @@ const resolvers = {
         },
 
         // saveBook mutation that adds a book to the user and returns a User object, pulls the user's id from context
-        saveBook: async (parent, {bookData}, context) => {
+        saveBook: async (parent, {input}, context) => {
             if (context.user) {
-                const updateUser = await User.findByIdAndUpdate(
+                const updateUser = await User.findOneAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: {bookData} } },
+                    { $addToSet: { savedBooks: input } },
                     { new: true, runValidators: true }
                 );
                 return updateUser;

@@ -4,6 +4,11 @@ const { gql } = require('apollo-server-express');
 //create tyoeDefs queries and mutations
 
 const typeDefs = gql`
+
+type Query {
+    me: User!
+}
+
 type User {
     _id: ID!
     username: String!
@@ -35,15 +40,12 @@ type Auth {
     user: User
 }
 
-type Query {
-    me: User!
-    users: [User]!
-}
+
 
 type Mutation {
     login(email: String!, password: String!): Auth
     addUser(username: String!, email: String!, password: String!): Auth
-    saveBook(bookData: BookInput!): User
+    saveBook(input: BookInput): User
     removeBook(bookId: String!): User
 }
 `;
