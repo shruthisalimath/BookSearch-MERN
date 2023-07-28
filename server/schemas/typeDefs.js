@@ -8,12 +8,12 @@ type User {
     _id: ID!
     username: String!
     email: String!
-    bookcount: Int
+    bookCount: Int
     savedBooks: [Book]!
 }
 
 type Book {
-    boodId: String!
+    bookId: String!
     authors: [String]
     description: String
     title: String!
