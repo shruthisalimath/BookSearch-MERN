@@ -79,16 +79,23 @@ const SearchBooks = () => {
       return false;
     }
 
-    try {
-      // save book to database
-      const response = await saveBook({
-        variables: bookToSave   
-      });
-      //console.log(data);
+    // try {
+    //   // save book to database
+    //   const { data } = await saveBook({
+    //     variables: { ...bookToSave },
+    //   });
+    //   console.log(data);
 
-      if(!response) {
-        throw new Error("book unable to save");
-      }
+      try {
+        // save book to database
+        const response = await saveBook({
+          variables: bookToSave   
+        });
+        //console.log(data);
+
+        if(!response) {
+          throw new Error("book unable to save");
+        }
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
@@ -98,7 +105,7 @@ const SearchBooks = () => {
 
   return (
     <>
-      <div  className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-5">
         <Container>
           <h1>Search for Books!</h1>
           <Form onSubmit={handleFormSubmit}>
@@ -124,7 +131,7 @@ const SearchBooks = () => {
       </div>
 
       <Container>
-        <h2 className= 'p-5'>
+        <h2 className='p-5'>
           {searchedBooks.length
             ? `Viewing ${searchedBooks.length} results:`
             : "Search for a book to begin"}
@@ -133,41 +140,41 @@ const SearchBooks = () => {
           {searchedBooks.map((book) => {
             return (
               <Col md="4">
-              <Card key={book.bookId} border="dark">
-                {book.image ? (
-                  <Card.Img
-                    src={book.image}
-                    alt={`The cover for ${book.title}`}
-                    variant="top"
-                  />
-                ) : null}
-                <Card.Body>
-                  <Card.Title>{book.title}</Card.Title>
-                  <p className="small">Authors: {book.authors}</p>
-                  <Card.Text>
-                    {book.description}
-                    <br />
-                    <a href={book.link} target="_blank" rel="noreferrer">
-                      Preview on Google Books
-                    </a>
-                  </Card.Text>
-                  {Auth.loggedIn() && (
-                    <Button
-                      disabled={savedBookIds?.some(
-                        (savedBookId) => savedBookId === book.bookId
-                      )}
-                      className="btn-block btn-info"
-                      onClick={() => handleSaveBook(book.bookId)}
-                    >
-                      {savedBookIds?.some(
-                        savedBookId => savedBookId === book.bookId
-                      )
-                        ? "This book has already been saved!"
-                        : "Save this Book!"}
-                    </Button>
-                  )}
-                </Card.Body>
-              </Card>
+                <Card key={book.bookId} border="dark">
+                  {book.image ? (
+                    <Card.Img
+                      src={book.image}
+                      alt={`The cover for ${book.title}`}
+                      variant="top"
+                    />
+                  ) : null}
+                  <Card.Body>
+                    <Card.Title>{book.title}</Card.Title>
+                    <p className="small">Authors: {book.authors}</p>
+                    <Card.Text>
+                      {book.description}
+                       <br />
+                      <a href={book.link} target="_blank" rel="noreferrer">
+                        Preview on Google Books
+                      </a> 
+                    </Card.Text>
+                    {Auth.loggedIn() && (
+                      <Button
+                        disabled={savedBookIds?.some(
+                          (savedBookId) => savedBookId === book.bookId
+                        )}
+                        className="btn-block btn-info"
+                        onClick={() => handleSaveBook(book.bookId)}
+                      >
+                        {savedBookIds?.some(
+                          savedBookId => savedBookId === book.bookId
+                        )
+                          ? "This book has already been saved!"
+                          : "Save this Book!"}
+                      </Button>
+                    )}
+                  </Card.Body>
+                </Card>
               </Col>
             );
           })}

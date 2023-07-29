@@ -10,6 +10,7 @@ const resolvers = {
         me: async (parent, args, context) => {
             if (context.user) {
                 const userData = await User.findOne({ _id: context.user._id }).select('-__v -password')
+                console.log("USER: ", userData)
                 return userData;
             }
             throw new AuthenticationError("You need to be logged in!");
@@ -49,12 +50,12 @@ const resolvers = {
         },
 
         // saveBook mutation that adds a book to the user and returns a User object, pulls the user's id from context
-        saveBook: async (parent, {input}, context) => {
+        saveBook: async (parent, { bookData }, context) => {
             if (context.user) {
-                const updateUser = await User.findOneAndUpdate(
+                const updateUser = await User.findByIdAndUpdate(
                     { _id: context.user._id },
-                    { $addToSet: { savedBooks: input } },
-                    { new: true, runValidators: true }
+                    { $push: { savedBooks: bookData } },
+                    { new: true }
                 );
                 return updateUser;
             }

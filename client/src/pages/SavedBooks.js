@@ -19,7 +19,9 @@ import { REMOVE_BOOK } from "../utils/mutation";
 const SavedBooks = () => {
   // define Get Me api call
   const { loading, data } = useQuery(GET_ME);
-  let userData = data?.me || [];
+  console.log("LOADING: ", loading);
+  console.log("DATA: ", data);
+  let userData = data?.me || {};
 
   // define remove book mutation
   const [removeBook] = useMutation(REMOVE_BOOK);
@@ -29,6 +31,7 @@ const SavedBooks = () => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
     if (!token) {
+      console.log("FALSE: ", false)
       return false;
     }
 
@@ -46,18 +49,22 @@ const SavedBooks = () => {
     }
   };
 
+  if(loading) {
+    return <h2>LOADING...</h2>
+  }
+
   return (
     <>
-      <div fluid className="text-light bg-dark p-5">
+      <div className="text-light bg-dark p-5">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
       </div>
       <Container>
         {/* use graphql loading paradigm */}
-        {loading ? (
+        {/* {loading ? (
           <div>Loading...</div>
-        ) : (
+        ) : ( */}
           <>
             <h2 className="pt-5">
               {userData.savedBooks?.length
@@ -101,7 +108,7 @@ const SavedBooks = () => {
               })}
             </Row>
           </>
-        )}
+        {/* )} */}
       </Container>
     </>
   );
