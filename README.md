@@ -1,7 +1,7 @@
 # BookSearch-MERN  ![GitHub License](https://shields.io/badge/license-ISC-brightgreen)
 
 ## Description
-    This Books API search engine is built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. This app is built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API.
+This Books API search engine is built with a RESTful API, and refactor it to be a GraphQL API built with Apollo Server. This app is built using the MERN stack with a React front end, MongoDB database, and Node.js/Express.js server and API.
 
 ## Tables of content:
   * [Installation](#installation)
