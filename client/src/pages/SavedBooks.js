@@ -61,10 +61,6 @@ const SavedBooks = () => {
         </Container>
       </div>
       <Container>
-        {/* use graphql loading paradigm */}
-        {/* {loading ? (
-          <div>Loading...</div>
-        ) : ( */}
           <>
             <h2 className="pt-5">
               {userData.savedBooks?.length
@@ -74,10 +70,10 @@ const SavedBooks = () => {
                 : "You have no saved books!"}
             </h2>
             <Row>
-              {userData.savedBooks?.map((book) => {
-                return (
-                  <Col md="4">
-                  <Card key={book.bookId} border="dark">
+              {userData.savedBooks?.map((book) => (
+                //return (
+                  <Col key={book.bookId} md="4">
+                  <Card  border="dark">
                     {book.image ? (
                       <Card.Img
                         src={book.image}
@@ -104,11 +100,9 @@ const SavedBooks = () => {
                     </Card.Body>
                   </Card>
                   </Col>
-                );
-              })}
+              ))}
             </Row>
-          </>
-        {/* )} */}
+          </>        
       </Container>
     </>
   );
