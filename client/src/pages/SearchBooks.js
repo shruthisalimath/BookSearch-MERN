@@ -55,7 +55,7 @@ const SearchBooks = () => {
         bookId: book.id,
         authors: book.volumeInfo.authors || ["No author to display"],
         title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
+        description: book.volumeInfo.description || "",
         image: book.volumeInfo.imageLinks?.thumbnail || "",
         link: book.volumeInfo.previewLink || "",
       }));
@@ -79,23 +79,17 @@ const SearchBooks = () => {
       return false;
     }
 
-    // try {
-    //   // save book to database
-    //   const { data } = await saveBook({
-    //     variables: { ...bookToSave },
-    //   });
-    //   console.log(data);
+    try {
+      // save book to database
+      const { data } = await saveBook({
+        variables: { bookData : { ...bookToSave }}
+      });
+     if (!data)
+     {
+      throw new Error("Cant find data")
+     }
 
-      try {
-        // save book to database
-        const response = await saveBook({
-          variables: bookToSave   
-        });
-        //console.log(data);
 
-        if(!response) {
-          throw new Error("book unable to save");
-        }
       // if book successfully saves to user's account, save book id to state
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
     } catch (err) {
@@ -137,51 +131,96 @@ const SearchBooks = () => {
             : "Search for a book to begin"}
         </h2>
         <Row>
-          {searchedBooks.map((book) => {
-            return (
-              <Col md="4">
-                <Card key={book.bookId} border="dark">
-                  {book.image ? (
-                    <Card.Img
-                      src={book.image}
-                      alt={`The cover for ${book.title}`}
-                      variant="top"
-                    />
-                  ) : null}
-                  <Card.Body>
-                    <Card.Title>{book.title}</Card.Title>
-                    <p className="small">Authors: {book.authors}</p>
-                    <Card.Text>
-                      {book.description}
-                       <br />
-                      <a href={book.link} target="_blank" rel="noreferrer">
-                        Preview on Google Books
-                      </a> 
-                    </Card.Text>
-                    {Auth.loggedIn() && (
-                      <Button
-                        disabled={savedBookIds?.some(
-                          (savedBookId) => savedBookId === book.bookId
-                        )}
-                        className="btn-block btn-info"
-                        onClick={() => handleSaveBook(book.bookId)}
-                      >
-                        {savedBookIds?.some(
-                          savedBookId => savedBookId === book.bookId
-                        )
-                          ? "This book has already been saved!"
-                          : "Save this Book!"}
-                      </Button>
-                    )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
-          })}
+          {searchedBooks.map(book => (
+            <Col key={book.bookId} md='4'>
+              <Card border='dark'>
+                {book.image ? (
+                  <Card.Img
+                    src={book.image}
+                    alt={`The cover for ${book.title}`}
+                    variant='top'
+                  />
+                ) : null}
+                <Card.Body>
+                  <Card.Title>{book.title}</Card.Title>
+                  <p className='small'>Authors: {book.authors}</p>
+                  <Card.Text>
+                    {book.description}
+                    <br />
+                    <a href={book.link} target='_blank' rel='noreferrer'>
+                      Preview on Google Books
+                    </a>
+                  </Card.Text>
+                  {Auth.loggedIn() && (
+                    <Button
+                      disabled={savedBookIds?.some(
+                        savedBookId => savedBookId === book.bookId
+                      )}
+                      className='btn-block btn-info'
+                      onClick={() => handleSaveBook(book.bookId)}
+                    >
+                      {savedBookIds?.some(
+                        savedBookId => savedBookId === book.bookId
+                      )
+                        ? 'This book has already been saved!'
+                        : 'Save this Book!'}
+                    </Button>
+                  )}
+                </Card.Body>
+              </Card>
+            </Col>
+          ))}
         </Row>
-      </Container>
+        </Container>
     </>
   );
 };
+//          <Row>
+//           {searchedBooks.map((book) => {
+//             return (
+//               <Col md="4">
+//                 <Card key={book.bookId} border="dark">
+//                   {book.image ? (
+//                     <Card.Img
+//                       src={book.image}
+//                       alt={`The cover for ${book.title}`}
+//                       variant="top"
+//                     />
+//                   ) : null}
+//                   <Card.Body>
+//                     <Card.Title>{book.title}</Card.Title>
+//                     <p className="small">Authors: {book.authors}</p>
+//                     <Card.Text>
+//                       {book.description}
+//                        <br />
+//                       <a href={book.link} target="_blank" rel="noreferrer">
+//                         Preview on Google Books
+//                       </a> 
+//                     </Card.Text>
+//                     {Auth.loggedIn() && (
+//                       <Button
+//                         disabled={savedBookIds?.some(
+//                           (savedBookId) => savedBookId === book.bookId
+//                         )}
+//                         className="btn-block btn-info"
+//                         onClick={() => handleSaveBook(book.bookId)}
+//                       >
+//                         {savedBookIds?.some(
+//                           savedBookId => savedBookId === book.bookId
+//                         )
+//                           ? "This book has already been saved!"
+//                           : "Save this Book!"}
+//                       </Button>
+//                     )}
+//                   </Card.Body>
+//                 </Card>
+//               </Col>
+//             );
+//           })}
+//         </Row>
+//       </Container>
+//     </>
+//   );
+// }; 
 
 export default SearchBooks;
