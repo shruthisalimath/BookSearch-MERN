@@ -15,11 +15,6 @@ const resolvers = {
             }
             throw new AuthenticationError("You need to be logged in!");
         },
-
-        // //query that returns all users
-        // users: async () => {
-        //     return await User.find({});
-        // }
     },
 
     Mutation: {
@@ -33,8 +28,7 @@ const resolvers = {
         // login mutation that returns an Auth object
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
-            //     $or: [{ username: email }, { email: email }],
-            // });
+            
             if (!user) {
                 throw new AuthenticationError("Incorrect Credentials");
             }
